@@ -1,6 +1,3 @@
-import react from 'react';
-
-
 const dataTable = () => {
     return (
         <div className="table-responsive">
