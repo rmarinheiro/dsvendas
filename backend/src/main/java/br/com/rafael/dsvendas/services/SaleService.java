@@ -1,6 +1,5 @@
 package br.com.rafael.dsvendas.services;
 
-
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.rafael.dsvendas.dto.SaleDTO;
+import br.com.rafael.dsvendas.dto.SaleSucessDTO;
+import br.com.rafael.dsvendas.dto.SaleSumDTO;
 import br.com.rafael.dsvendas.dto.SellerDTO;
 import br.com.rafael.dsvendas.entity.Sale;
 import br.com.rafael.dsvendas.entity.Seller;
@@ -20,18 +21,28 @@ import br.com.rafael.dsvendas.repositories.SellerRepository;
 
 @Service
 public class SaleService {
-	
+
 	@Autowired
 	private SaleRepository repository;
-	
+
 	@Autowired
 	private SellerRepository sellerRepository;
-	
+
 	@Transactional(readOnly = true)
-	public Page<SaleDTO> findAll(Pageable pageable){
+	public Page<SaleDTO> findAll(Pageable pageable) {
 		sellerRepository.findAll();
 		Page<Sale> sale = repository.findAll(pageable);
-		return sale.map(x-> new SaleDTO(x));
+		return sale.map(x -> new SaleDTO(x));
+	}
+	
+	@Transactional(readOnly = true)
+	public List<SaleSumDTO> amountGroupedBySeller() {
+		return repository.amountGroupedBySeller();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<SaleSucessDTO> sucess() {
+		return repository.sucessGroupedBySeller();
 	}
 
 }
